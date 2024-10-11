@@ -6,11 +6,11 @@ using UnityEngine.UI;
 public class EnemyAISuspicion : MonoBehaviour
 {
     public Transform player;
-    public float suspicionIncreaseRate = 10f; // How fast the suspicion increases
-    public float suspicionDecreaseRate = 5f;  // How fast the suspicion decreases when the player is out of the circle
+    public float suspicionIncreaseRate = 10f; 
+    public float suspicionDecreaseRate = 5f; 
     public float maxSuspicion = 100f;         // Maximum suspicion before AI starts chasing
     public float detectionRadius = 5f;        // Radius within which suspicion increases
-    public Image suspicionBar;                // Reference to the UI element for the suspicion bar
+    public Image suspicionBar;                
     public LayerMask obstructionLayers;       // Layers that block suspicion detection (like walls)
 
     private float currentSuspicion = 0f;

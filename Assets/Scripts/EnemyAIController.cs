@@ -6,14 +6,14 @@ using UnityEngine.AI;
 public class EnemyAIController : MonoBehaviour
 {
     public Transform[] patrolPoints;       // Points the AI will patrol
-    public Transform player;               // Reference to the player
+    public Transform player;               
     public float chaseDistance = 10f;      // Distance at which AI starts chasing
     public float visionAngle = 60f;        // Vision cone angle
     public float lostSightDuration = 2f;   // Time after losing sight to stop chasing
     public float searchDuration = 5f;      // Time to search for the player after losing sight
     public float searchRadius = 3f;        // Radius around last seen position to roam
     public float catchDistance = 2f;       // Distance at which AI can catch the player
-    public float stunDuration = 3f;        // How long the player will be stunned
+    public float stunDuration = 3f;      
     public LayerMask obstructionLayers;    // Layers that can block sight (e.g., walls)
 
     private NavMeshAgent navMeshAgent;
@@ -46,8 +46,11 @@ public class EnemyAIController : MonoBehaviour
     {
         timeSinceLastSeenPlayer += Time.deltaTime;
 
-        if (hasCaughtPlayer)
+        if (hasCaughtPlayer)  // Only skip the chasing logic but continue patrol
+        {
+            Patrol();
             return;
+        }
 
         if (isChasing)
         {
@@ -55,17 +58,13 @@ public class EnemyAIController : MonoBehaviour
             {
                 if (PlayerHiding.isHiding && targetHidingPlace != null)
                 {
-                    // Move to the hiding place
                     navMeshAgent.destination = targetHidingPlace.transform.position;
 
-                    Debug.Log("1");
-
-                    // Check if AI has reached the hiding place
+                    // AI reaches hiding place, finds the player, and catches them
                     if (Vector3.Distance(transform.position, targetHidingPlace.hidingTransform.position) <= catchDistance && !hasCaughtPlayer)
                     {
-                        Debug.Log("2");
-                        targetHidingPlace.FoundPlayer(); 
-                        CatchPlayer();                   
+                        targetHidingPlace.FoundPlayer();
+                        CatchPlayer();
                     }
                 }
                 else
@@ -74,12 +73,11 @@ public class EnemyAIController : MonoBehaviour
                     timeSinceLastSeenPlayer = 0;
                     lastKnownPosition = player.position;
 
-                    
+                    // AI catches the player
                     if (Vector3.Distance(transform.position, player.position) <= catchDistance && !hasCaughtPlayer)
                     {
                         CatchPlayer();
                     }
-                    
                 }
             }
             else
@@ -101,49 +99,6 @@ public class EnemyAIController : MonoBehaviour
             }
         }
     }
-
-    /*
-    void Update()
-    {
-        if (hasCaughtPlayer)
-            return; // Skip chasing logic while catching
-
-        if (isChasing)
-        {
-            if (PlayerInSight())
-            {
-                navMeshAgent.destination = player.position;
-                timeSinceLastSeenPlayer = 0;
-                lastKnownPosition = player.position; // Update last known position
-
-                // If AI is close enough to catch the player
-                if (Vector3.Distance(transform.position, player.position) <= catchDistance && !hasCaughtPlayer)
-                {
-                    CatchPlayer();
-                }
-            }
-            else
-            {
-                // If player is not in sight, search for a limited time
-                StartSearching();
-            }
-        }
-        else if (isSearching)
-        {
-            SearchForPlayer();
-        }
-        else
-        {
-            Patrol();
-
-            // Immediately start chasing if player comes into sight
-            if (PlayerInSight())
-            {
-                isChasing = true;
-            }
-        }
-    }
-    */
 
     void Patrol()
     {
@@ -167,8 +122,6 @@ public class EnemyAIController : MonoBehaviour
         isSearching = true;
         searchStartTime = Time.time;
         navMeshAgent.destination = lastKnownPosition;
-
-        Debug.Log("Searching");
     }
 
     void SearchForPlayer()
@@ -274,34 +227,31 @@ public class EnemyAIController : MonoBehaviour
         aiSuspicion.ResetSuspicion();
         playerMovement.StunPlayer(stunDuration);
 
-        Debug.Log("Caught");
+        Debug.Log("Caught Player");
 
-        GoToNextPatrolPoint();
+        GoToNextPatrolPoint();  // Continue patrolling after catching the player
         Invoke("ResetAIState", 6f);
     }
 
     void ResetAIState()
     {
-        hasCaughtPlayer = false; // AI is ready to chase again
-        //GoToNextPatrolPoint();   // Return to patrolling
-
+        hasCaughtPlayer = false;  // AI is ready to chase again
         isChasing = false;
         isSearching = false;
         aiSuspicion.ResetSuspicion();
     }
 
-    public void StartChasing() //suspicion full
+    public void StartChasing()  // Called when suspicion is full
     {
         if (!hasCaughtPlayer && !isChasing)
         {
             isChasing = true;
-            navMeshAgent.destination = player.position;  // Start heading toward the player's position
+            navMeshAgent.destination = player.position;
             timeSinceLastSeenPlayer = 0;
-            lastKnownPosition = player.position;         // Set the last known position
+            lastKnownPosition = player.position;
         }
     }
 
-    // Debugging in Scene View
     void OnDrawGizmos()
     {
         if (player != null)

@@ -13,7 +13,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        // Ensure the Rigidbody is not using gravity (so the player doesn't fall)
         rb.useGravity = false;
     }
 
@@ -21,15 +20,13 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isStunned)
         {
-            // WASD Movement input
             float moveHorizontal = Input.GetAxis("Horizontal"); // A/D or Left/Right Arrow keys
             float moveVertical = Input.GetAxis("Vertical");     // W/S or Up/Down Arrow keys
 
-            // Joystick input
             float joystickHorizontal = joystick.Horizontal();
             float joystickVertical = joystick.Vertical();
 
-            // Combine the WASD and joystick input
+            // Combine WASD and joystick input
             float horizontal = Mathf.Abs(joystickHorizontal) > Mathf.Abs(moveHorizontal) ? joystickHorizontal : moveHorizontal;
             float vertical = Mathf.Abs(joystickVertical) > Mathf.Abs(moveVertical) ? joystickVertical : moveVertical;
 
@@ -47,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                // If not moving, stop horizontal movement but keep the Y velocity (for gravity or jumps)
+                // If not moving, stop horizontal movement but keep the Y velocity
                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
             }
         }

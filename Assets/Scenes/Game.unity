@@ -8296,10 +8296,11 @@ MonoBehaviour:
   npcsToEnable:
   - {fileID: 650172730}
   - {fileID: 2028382895}
+  - {fileID: 682220994}
   objectA: {fileID: 255276844}
   objectB: {fileID: 1898512351}
   objectC: {fileID: 753677997}
-  numberOfWaves: 2
+  numberOfWaves: 3
   timePerWave: 30
 --- !u!1 &600399797
 GameObject:
@@ -9754,7 +9755,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &682220995
 BoxCollider:
   m_ObjectHideFlags: 0

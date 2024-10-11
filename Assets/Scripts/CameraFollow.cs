@@ -23,14 +23,11 @@ public class CameraFollow : MonoBehaviour
     {
         if (!isManualControl)
         {
-            // Smoothly follow the player's position
             Vector3 desiredPosition = player.position + offset;
 
-            // Use SmoothDamp for smoother motion
             Vector3 smoothedPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothSpeed);
             transform.position = smoothedPosition;
 
-            // Smoothly rotate towards the player
             Quaternion targetRotation = Quaternion.LookRotation(player.position - transform.position);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }

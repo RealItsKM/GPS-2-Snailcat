@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class NPCWaves : MonoBehaviour
 {
-    public List<GameObject> npcsToEnable;  // List of NPCs to enable/disable for each wave
+    public List<GameObject> npcsToEnable; 
     public GameObject objectA;             // Object A to enable for the first 10 seconds of each wave
     public GameObject objectB;             // Object B to enable for the last 10 seconds of each wave
-    public GameObject objectC;             // Special Object C for the first 10 seconds of the last wave
-    public int numberOfWaves = 5;          // Total number of waves
-    public float timePerWave = 30f;        // Time in seconds for each wave (should be > 20s to allow A and B timing)
+    public GameObject objectC;             // Object C for the first 10 seconds of the last wave
+    public int numberOfWaves = 5;          
+    public float timePerWave = 30f;       
 
     private int currentWave = 0;          
-    private float waveTimer = 0f;          // Timer for tracking wave progress
+    private float waveTimer = 0f;          
 
     private bool objectAEnabled = false;
     private bool objectBEnabled = false;
@@ -20,10 +20,8 @@ public class NPCWaves : MonoBehaviour
 
     void Start()
     {
-        // Ensure the number of waves matches the number of NPCs in the list
         numberOfWaves = Mathf.Min(numberOfWaves, npcsToEnable.Count);
 
-        // Initialize the first wave
         StartWave();
     }
 
@@ -33,7 +31,7 @@ public class NPCWaves : MonoBehaviour
         {
             waveTimer += Time.deltaTime;
 
-            // Special case for the last wave (objectC logic)
+            // Special case for the last wave (objectC)
             if (currentWave == numberOfWaves - 1)
             {
                 // Enable Object C for the first 10 seconds
