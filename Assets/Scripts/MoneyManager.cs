@@ -40,6 +40,6 @@ public class MoneyManager : MonoBehaviour
     public void UpdateMoneyUI()
     {
         currentMoneyText.text = currentMoney.ToString();
-        //bankMoneyText.text = bankMoney.ToString();
+        bankMoneyText.text = bankMoney.ToString();
     }
 }

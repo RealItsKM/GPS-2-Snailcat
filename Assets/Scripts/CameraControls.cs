@@ -11,7 +11,7 @@ public class CameraControls : MonoBehaviour
     public float maxX = 10f;          // Maximum X position for the camera
 
     private Vector2 initialTouchPosition;
-    private bool isDragging = false;
+    public static bool isDragging = false;
     void Update()
     {
         // Check if the touch or mouse click is over a UI element
@@ -89,8 +89,21 @@ public class CameraControls : MonoBehaviour
     {
         PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
         eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-        return results.Count > 0;
+
+        // Check if any of the results belong to UI elements that should block the camera movement
+        foreach (RaycastResult result in results)
+        {
+            // Check if the UI element should block the camera movement based on its tag or a specific component
+            if (result.gameObject.CompareTag("BlockCamera")) // Replace with the appropriate tag or component check
+            {
+                return true;  // Block camera movement for this UI element
+            }
+        }
+
+        // If no UI elements with the specified tag/component were found, allow camera movement
+        return false;
     }
 }

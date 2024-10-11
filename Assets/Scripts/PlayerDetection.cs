@@ -3,20 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NPCDetection : MonoBehaviour
+public class PlayerDetection : MonoBehaviour
 {
-    public Button angPaoButton;
-
-    void Update()
-    {
-        
-    }
+    public Button minigameButton;
 
     private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player")
         {
-            angPaoButton.interactable = true;
+            minigameButton.interactable = true;
         }
     }
 
@@ -24,7 +19,7 @@ public class NPCDetection : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            angPaoButton.interactable = false;
+            minigameButton.interactable = false;
         }
     }
 }

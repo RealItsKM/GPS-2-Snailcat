@@ -6,46 +6,48 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class PlateMinigame : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class TeaMinigame : MonoBehaviour, IPointerDownHandler
 {
     public int requiredTapNumber = 0;
     public int currentTapNumber = 0;
     public TextMeshProUGUI requiredTapNumberText;
-    private bool gameFinished;
     public GameObject gamePanel;
-    public AngPaoManager angPaoManager;
-    public GameObject angPaoButton;
+    public HeldItem itemManager;
+    public NPCMinigame[] npcMinigame;
 
     void Start()
+    {
+        RefreshMinigame();
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        currentTapNumber++;
+        requiredTapNumberText.text = (requiredTapNumber - currentTapNumber).ToString();
+
+        if (currentTapNumber >= requiredTapNumber)
+        {
+            itemManager.GetItem(1);
+            RefreshMinigame();
+            ActivateUpdateIcons();
+            gamePanel.SetActive(false);
+        }
+    }
+
+    public void RefreshMinigame()
     {
         currentTapNumber = 0;
         requiredTapNumberText.text = requiredTapNumber.ToString();
     }
 
-    /*
-    public void StartMiniGame()
+    void ActivateUpdateIcons()
     {
-        gamePanel.SetActive(true);
-    }
-    */
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        currentTapNumber++;
-        Debug.Log(currentTapNumber);
-        requiredTapNumberText.text = (requiredTapNumber - currentTapNumber).ToString();
-
-        if (currentTapNumber >= requiredTapNumber)
+        foreach (NPCMinigame npc in npcMinigame)
         {
-            gameFinished = true;
-            angPaoManager.CollectAngPao();
-            angPaoButton.SetActive(false);
-            gamePanel.SetActive(false);
+            if (npc != null)  
+            {
+                npc.UpdateIcons();
+            }
         }
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
-
     }
 }

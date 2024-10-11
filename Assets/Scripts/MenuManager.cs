@@ -5,20 +5,47 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
-    public GameObject pauseMenu;
+    public GameObject settingsMenu;
+    public GameObject startScreen;
+    public GameObject modeSelection;
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene("Game");
+    }
+
+    public void StartTutorial()
+    {
+        SceneManager.LoadScene("Tutorial");
+    }
+
+    public void ReturnMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 
     public void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void OpenPauseMenu()
+    public void OpenStartScreen()
     {
-        pauseMenu.SetActive(true);
+        startScreen.SetActive(true);
     }
 
-    public void ClosePauseMenu()
+    public void OpenModeSelection()
     {
-        pauseMenu.SetActive(false);
+        modeSelection.SetActive(true);
+    }
+
+    public void OpenSettingsMenu()
+    {
+        settingsMenu.SetActive(true);
+    }
+
+    public void CloseSettingsMenu()
+    {
+        settingsMenu.SetActive(false);
     }
 }

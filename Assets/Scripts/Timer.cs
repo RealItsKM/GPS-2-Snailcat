@@ -19,7 +19,7 @@ public class Timer : MonoBehaviour
 
             if (timer <= 0)
             {
-                Debug.Log("Game Over");
+                //Debug.Log("Game Over");
                 timeStarted = false;
                 ZeroTimer();
                 resultScreen.SetActive(true);
