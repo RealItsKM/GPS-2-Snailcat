@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -37,51 +38,76 @@ public class EnemyAIController : MonoBehaviour
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        //timeSinceLastSeenPlayer = lostSightDuration; // Start by patrolling
+        //timeSinceLastSeenPlayer = lostSightDuration; 
         timeSinceLastSeenPlayer = 0f;
         GoToNextPatrolPoint();
     }
 
     void Update()
     {
+        /*
+        if (TutorialMode.tutorialOn)
+        {
+            Debug.Log("Tutorial On");
+            navMeshAgent.enabled = false;
+            return;
+        }
+        else
+        {
+            navMeshAgent.enabled = true;
+        }
+        */
+
         timeSinceLastSeenPlayer += Time.deltaTime;
 
-        if (hasCaughtPlayer)  // Only skip the chasing logic but continue patrol
+        // Debug: Check current state
+        Debug.Log($"AI State: isChasing={isChasing}, isSearching={isSearching}, hasCaughtPlayer={hasCaughtPlayer}, PlayerHiding={PlayerHiding.isHiding}");
+
+        if (hasCaughtPlayer)
         {
-            Patrol();
+            Patrol();  // Keep patrolling after catching the player
             return;
         }
 
         if (isChasing)
         {
+            // Check if player is in sight
             if (PlayerInSight())
             {
+                Debug.Log("AI sees the player!");
+
+                // If player is hiding and AI has found a hiding place
                 if (PlayerHiding.isHiding && targetHidingPlace != null)
                 {
-                    navMeshAgent.destination = targetHidingPlace.transform.position;
+                    Debug.Log("Player is hiding. Moving towards hiding place...");
+                    navMeshAgent.destination = targetHidingPlace.hidingTransform.position;  // Move to hiding place
 
-                    // AI reaches hiding place, finds the player, and catches them
-                    if (Vector3.Distance(transform.position, targetHidingPlace.hidingTransform.position) <= catchDistance && !hasCaughtPlayer)
+                    // Check if AI reaches the hiding place
+                    if (Vector3.Distance(transform.position, targetHidingPlace.hidingTransform.position) <= catchDistance + 1f && !hasCaughtPlayer)
                     {
-                        targetHidingPlace.FoundPlayer();
-                        CatchPlayer();
+                        targetHidingPlace.FoundPlayer();  // Found player in hiding place
+                        Debug.Log("AI caught the player at the hiding place!");
+                        CatchPlayer();  // Catch the player
                     }
                 }
-                else
+                else  // If player is not hiding, chase normally
                 {
-                    navMeshAgent.destination = player.position;
+                    Debug.Log("Chasing player directly...");
+                    navMeshAgent.destination = player.position;  // Chase the player
                     timeSinceLastSeenPlayer = 0;
                     lastKnownPosition = player.position;
 
-                    // AI catches the player
+                    // Check if AI catches the player
                     if (Vector3.Distance(transform.position, player.position) <= catchDistance && !hasCaughtPlayer)
                     {
-                        CatchPlayer();
+                        Debug.Log("AI caught the player!");
+                        CatchPlayer();  // Catch the player
                     }
                 }
             }
             else
             {
+                Debug.Log("Player not in sight, starting to search...");
                 StartSearching();
             }
         }
@@ -91,12 +117,24 @@ public class EnemyAIController : MonoBehaviour
         }
         else
         {
-            Patrol();
+            Patrol();  // Patrol if not chasing or searching
 
+            // If player is sighted during patrol, start chasing
             if (PlayerInSight())
             {
+                Debug.Log("Player seen during patrol, start chasing!");
                 isChasing = true;
             }
+        }
+
+        // Debug: Check if AI has a destination
+        if (navMeshAgent.destination != null)
+        {
+            //Debug.Log($"Current AI Destination: {navMeshAgent.destination}");
+        }
+        else
+        {
+            Debug.Log("No destination set for AI");
         }
     }
 
@@ -142,15 +180,15 @@ public class EnemyAIController : MonoBehaviour
             else
             {
                 isSearching = false;
-                GoToNextPatrolPoint();
+                GoToNextPatrolPoint();  // Resume patrolling after search ends
             }
         }
 
-        // Check if player is in sight again while searching
+        // If player is found during search
         if (PlayerInSight())
         {
             isSearching = false;
-            isChasing = true;
+            isChasing = true;  // Resume chasing if player is found during search
         }
     }
 
@@ -162,41 +200,39 @@ public class EnemyAIController : MonoBehaviour
         if (distanceToPlayer < chaseDistance)
         {
             float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
+
             if (angleToPlayer < visionAngle / 2f)
             {
                 if (!Physics.Raycast(eyePosition, directionToPlayer, distanceToPlayer, obstructionLayers))
                 {
-                    if (PlayerHiding.isHiding == true && timeSinceLastSeenPlayer <= lostSightDuration) // ai saw player hide
+                    if (PlayerHiding.isHiding && timeSinceLastSeenPlayer <= lostSightDuration)
                     {
-                        // Find the closest hiding place
                         targetHidingPlace = FindClosestHidingPlace();
                         if (targetHidingPlace != null)
                         {
+                            Debug.Log("AI saw player hide. Moving to hiding spot.");
                             timeSinceLastSeenPlayer = 0;
-                            Debug.Log("a");
-                            Debug.Log(targetHidingPlace.gameObject);
-                            return true; 
+                            return true;
                         }
                     }
-                    else if (PlayerHiding.isHiding) //ai did not saw player hide
+                    else if (PlayerHiding.isHiding)
                     {
+                        Debug.Log("Player is hiding, but AI did not see them.");
                         targetHidingPlace = null;
-                        Debug.Log("b");
                         return false;
                     }
-                    else //player in range
+                    else
                     {
+                        Debug.Log("Player in sight, chasing.");
                         timeSinceLastSeenPlayer = 0;
-                        targetHidingPlace = null;  
-                        //Debug.Log("c");
-                        return true;  
+                        targetHidingPlace = null;
+                        return true;
                     }
                 }
             }
         }
 
-        //Debug.Log("d"); 
-        //player not in range
+        Debug.Log("Player not in sight.");
         return false;
     }
 
@@ -223,6 +259,7 @@ public class EnemyAIController : MonoBehaviour
         hasCaughtPlayer = true;
         isChasing = false;
 
+        // Handle post-catch logic (e.g., reset money, suspicion, stun player)
         moneyManager.ClearMoney();
         aiSuspicion.ResetSuspicion();
         playerMovement.StunPlayer(stunDuration);
@@ -230,7 +267,7 @@ public class EnemyAIController : MonoBehaviour
         Debug.Log("Caught Player");
 
         GoToNextPatrolPoint();  // Continue patrolling after catching the player
-        Invoke("ResetAIState", 6f);
+        Invoke("ResetAIState", 6f);  // Reset AI state after some time
     }
 
     void ResetAIState()
@@ -254,13 +291,7 @@ public class EnemyAIController : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if (player != null)
-        {
-            //Gizmos.color = Color.red;
-            //Gizmos.DrawLine(eyePosition, player.position);
-        }
-
-        // Draw AI vision cone in Scene view
+        // Draw vision cone in Scene view
         DrawVisionCone();
 
         if (isSearching)

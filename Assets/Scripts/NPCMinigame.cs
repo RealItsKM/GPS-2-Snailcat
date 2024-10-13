@@ -12,6 +12,7 @@ public class NPCMinigame : MonoBehaviour
     public HeldItem itemManager;
     private bool itemGiven = false;
     public bool minigameOn = false;
+    //public TutorialMode tutorialManager;
 
     private void Start()
     {
@@ -35,10 +36,15 @@ public class NPCMinigame : MonoBehaviour
             return;
         }
 
-        if (!itemGiven)
+        if (!itemGiven && itemManager.heldItem != null)
         {
             itemManager.heldItem = null; //use item
             itemGiven = true;
+
+            if (TutorialMode.tutorialOn && TutorialMode.gaveFoodOrTea == false)
+            {
+                TutorialMode.gaveFoodOrTea = true;
+            }
         }
         
         itemManager.UpdateItemUI();

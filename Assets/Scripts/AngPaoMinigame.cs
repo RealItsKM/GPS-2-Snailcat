@@ -8,7 +8,7 @@ using TMPro;
 
 public class AngPaoMinigame : MonoBehaviour, IPointerDownHandler
 {
-    public int requiredTapNumber = 0;
+    private int requiredTapNumber = 0;
     public int currentTapNumber = 0;
     public TextMeshProUGUI requiredTapNumberText;
     private bool gameFinished;
@@ -19,6 +19,9 @@ public class AngPaoMinigame : MonoBehaviour, IPointerDownHandler
     void Start()
     {
         currentTapNumber = 0;
+
+        requiredTapNumber = Random.Range(5, 51);
+
         requiredTapNumberText.text = requiredTapNumber.ToString();
     }
 
@@ -38,7 +41,7 @@ public class AngPaoMinigame : MonoBehaviour, IPointerDownHandler
         if (currentTapNumber >= requiredTapNumber)
         {
             gameFinished = true;
-            angPaoManager.CollectAngPao();
+            angPaoManager.CollectAngPao(requiredTapNumber);
             angPaoButton.SetActive(false);
             gamePanel.SetActive(false);
         }

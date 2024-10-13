@@ -7,7 +7,7 @@ public class HidingPlace : MonoBehaviour
     public GameObject player;
     public GameObject joystick;
     private bool isHidden = false;
-    public Transform hidingTransform;
+    public Transform hidingTransform; //for enemy ai
 
     public void HideButton()
     {

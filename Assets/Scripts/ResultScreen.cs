@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ResultScreen : MonoBehaviour
 {
-    //public MoneyManager moneyManager;
+    public MoneyManager moneyManager;
     //public AngPaoManager angPaoManager;
     public TextMeshProUGUI moneyCollectedText;
     public TextMeshProUGUI angPaoCollectedText;
@@ -24,7 +24,7 @@ public class ResultScreen : MonoBehaviour
 
     void Start()
     {
-        moneyCollectedText.text = MoneyManager.bankMoney.ToString();
+        moneyCollectedText.text = MoneyManager.currentBankMoney.ToString();
         angPaoCollectedText.text = AngPaoManager.angPaoNumber.ToString();
         timesCaughtText.text = PlayerMovement.timesCaught.ToString();
 
@@ -37,11 +37,13 @@ public class ResultScreen : MonoBehaviour
         gradeF.SetActive(false);
 
         CalculateGrade();
+
+        moneyManager.TotalBankMoney();
     }
 
     void CalculateGrade()
     {
-        int bankMoney = MoneyManager.bankMoney;  // Get the current bank money value
+        int bankMoney = MoneyManager.currentBankMoney;  // Get the current bank money value
         char grade = 'F';  // Default to F grade
         float sliderValue = 0f;  // Default slider value
 

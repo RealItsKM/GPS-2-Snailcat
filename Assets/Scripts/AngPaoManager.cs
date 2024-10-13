@@ -7,13 +7,14 @@ public class AngPaoManager : MonoBehaviour
     public static int angPaoNumber;
     private int angPaoMoneyAmount;
     public MoneyManager moneyManager;
+    public TutorialMode tutorialManager;
 
     private void Start()
     {
         angPaoNumber = 0;  
     }
 
-    public void CollectAngPao()
+    public void CollectAngPao(int num)
     {
         /*
         angPaoMoneyAmount = Random.Range(5, 51);
@@ -23,6 +24,7 @@ public class AngPaoManager : MonoBehaviour
         Debug.Log("Received " +  angPaoMoneyAmount);
         */
 
+        /*
         int rng = Random.Range(1, 21);
 
         if (rng <= 10 ) //50%
@@ -41,7 +43,24 @@ public class AngPaoManager : MonoBehaviour
         {
             moneyManager.AddMoney(50);
         }
+        */
+
+        moneyManager.AddMoney(num);
+
+        Debug.Log("Received " + num);
 
         angPaoNumber++;
+
+        if(TutorialMode.tutorialOn)
+        {
+            if(TutorialMode.gaveFoodOrTea == false && TutorialMode.collectedAngpao == false)
+            {
+                tutorialManager.CollectAngpao();
+            }
+            else if (TutorialMode.gaveFoodOrTea == true && TutorialMode.collectedAngpao == true)
+            {
+                tutorialManager.GiveFoodOrTea();
+            }
+        }
     }
 }
