@@ -27,13 +27,17 @@ public class TutorialMode : MonoBehaviour
     public static bool shortWaveOver;
 
     //objects
+    public GameObject joystick;
     public GameObject angpaoNPC;
     public GameObject foodNPC;
     public GameObject foodButton;
     public GameObject piggyBankButton;
     public GameObject obstacleButton;
     public GameObject enemy1;
+    public GameObject wavesManager;
     public GameObject timer;
+    public GameObject waves;
+    public Transform originalEnemy1Position;
 
     void Start()
     {
@@ -44,10 +48,20 @@ public class TutorialMode : MonoBehaviour
         usedObstacle = false;
         shortWaveOver = false;
 
-        //restrict player movement
-        Invoke("PopUpA1", 2f);
-        //enable player movement 
+        joystick.SetActive(false); //restrict player movement
+        Invoke("PopUpA1", 1.5f);
+        Invoke("EnableJoystick", 2f); ;//enable player movement 
         angpaoNPC.SetActive(true); //enable npc with angpao
+    }
+
+    public void EnableJoystick()
+    {
+        joystick.SetActive(true);
+    }
+
+    public void EnableEnemy1()
+    {
+        enemy1.SetActive(true);
     }
 
     public void CollectAngpao() //AngPaoManager
@@ -72,7 +86,7 @@ public class TutorialMode : MonoBehaviour
         Invoke("PopUpD1", 1f);
 
         obstacleButton.SetActive(true); //enable obstacle
-        enemy1.SetActive(true); //enable enemy movement
+        Invoke("EnableEnemy1", 3f); //enable enemy movement
     }
 
     public void UseObstacle() //Obstacle
@@ -83,16 +97,28 @@ public class TutorialMode : MonoBehaviour
 
     public void StartShortWave()
     {
-        //start short wave after closing
-        //reset enemy position
+        CloseTutorialUI();
+        wavesManager.SetActive(true); //start short wave after closing
+        enemy1.transform.position = originalEnemy1Position.position; //reset enemy position
         timer.SetActive(true); //enable timer
+        waves.SetActive(true); //enable waves
     }
 
-    public void AfterShortWave() //after 1 minute
+    public void AfterShortWave() //tapping on result screen
     {
-        PopUpFinished(); //show finished tutorial pop up
+        PopUpFinished(); //show finished tutorial pop up after result screen
+        TutorialCompleted();
     }
 
+    public void TutorialCompleted()
+    {
+        tutorialOn = false;
+        collectedAngpao = false;
+        gaveFoodOrTea = false;
+        usedPiggyBank = false;
+        usedObstacle = false;
+        shortWaveOver = false;
+    }
 
     public void OpenTutorialUI()
     {

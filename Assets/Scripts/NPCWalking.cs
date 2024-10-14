@@ -5,9 +5,9 @@ using UnityEngine.AI;
 
 public class NPCWalking : MonoBehaviour
 {
-    public List<Transform> walkingPoints;  // List of points the NPC will walk to
-    public float walkSpeed = 3f;         // Speed of the NPC
-    public bool canWalk = true;            // Condition to start/stop walking
+    public List<Transform> walkingPoints;
+    public float walkSpeed = 3f;     
+    public bool canWalk = true;          
 
     private int currentPointIndex = 0;     // The current point the NPC is walking to
     private NavMeshAgent navMeshAgent;     // Reference to the NavMeshAgent for movement
@@ -40,7 +40,7 @@ public class NPCWalking : MonoBehaviour
             //navMeshAgent.isStopped = true; // Stop movement when canWalk is false
             StopWalking();
         }
-        else
+        else if (canWalk == true)
         {
             ResumeWalking();
         }
@@ -51,25 +51,39 @@ public class NPCWalking : MonoBehaviour
     {
         if (walkingPoints.Count == 0) return;
 
-        // Increment the point index, loop back to the first point if at the end
+        //loop back to the first point if at the end
         currentPointIndex = (currentPointIndex + 1) % walkingPoints.Count;
 
         // Set the next destination
         navMeshAgent.destination = walkingPoints[currentPointIndex].position;
     }
 
-    // Call this method to stop walking
     public void StopWalking()
     {
         canWalk = false;
         navMeshAgent.isStopped = true;
     }
 
-    // Call this method to resume walking
     public void ResumeWalking()
     {
         canWalk = true;
         navMeshAgent.isStopped = false;
         navMeshAgent.destination = walkingPoints[currentPointIndex].position;  // Resume walking to the next point
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            StopWalking();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            ResumeWalking();
+        }
     }
 }

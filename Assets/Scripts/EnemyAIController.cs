@@ -22,7 +22,7 @@ public class EnemyAIController : MonoBehaviour
     private float timeSinceLastSeenPlayer;
     public bool isChasing = false;
     private bool isSearching = false;
-    public bool hasCaughtPlayer = false;
+    public static bool hasCaughtPlayer = false;
     private Vector3 lastKnownPosition;     // Last known position of the player
     private float searchStartTime;
     private Vector3 eyePositionOffset = new Vector3(0, 1.5f, 0); // Adjust where the ray starts from
@@ -61,7 +61,7 @@ public class EnemyAIController : MonoBehaviour
         timeSinceLastSeenPlayer += Time.deltaTime;
 
         // Debug: Check current state
-        Debug.Log($"AI State: isChasing={isChasing}, isSearching={isSearching}, hasCaughtPlayer={hasCaughtPlayer}, PlayerHiding={PlayerHiding.isHiding}");
+        //Debug.Log($"AI State: isChasing={isChasing}, isSearching={isSearching}, hasCaughtPlayer={hasCaughtPlayer}, PlayerHiding={PlayerHiding.isHiding}");
 
         if (hasCaughtPlayer)
         {
@@ -74,7 +74,7 @@ public class EnemyAIController : MonoBehaviour
             // Check if player is in sight
             if (PlayerInSight())
             {
-                Debug.Log("AI sees the player!");
+                //Debug.Log("AI sees the player");
 
                 // If player is hiding and AI has found a hiding place
                 if (PlayerHiding.isHiding && targetHidingPlace != null)
@@ -86,13 +86,13 @@ public class EnemyAIController : MonoBehaviour
                     if (Vector3.Distance(transform.position, targetHidingPlace.hidingTransform.position) <= catchDistance + 1f && !hasCaughtPlayer)
                     {
                         targetHidingPlace.FoundPlayer();  // Found player in hiding place
-                        Debug.Log("AI caught the player at the hiding place!");
+                        Debug.Log("AI caught the player at the hiding place");
                         CatchPlayer();  // Catch the player
                     }
                 }
                 else  // If player is not hiding, chase normally
                 {
-                    Debug.Log("Chasing player directly...");
+                    //Debug.Log("Chasing player");
                     navMeshAgent.destination = player.position;  // Chase the player
                     timeSinceLastSeenPlayer = 0;
                     lastKnownPosition = player.position;
@@ -100,14 +100,14 @@ public class EnemyAIController : MonoBehaviour
                     // Check if AI catches the player
                     if (Vector3.Distance(transform.position, player.position) <= catchDistance && !hasCaughtPlayer)
                     {
-                        Debug.Log("AI caught the player!");
+                        //Debug.Log("AI caught the player");
                         CatchPlayer();  // Catch the player
                     }
                 }
             }
             else
             {
-                Debug.Log("Player not in sight, starting to search...");
+                //Debug.Log("Player not in sight, starting to search");
                 StartSearching();
             }
         }
@@ -122,7 +122,7 @@ public class EnemyAIController : MonoBehaviour
             // If player is sighted during patrol, start chasing
             if (PlayerInSight())
             {
-                Debug.Log("Player seen during patrol, start chasing!");
+                //Debug.Log("Player seen during patrol, start chasing");
                 isChasing = true;
             }
         }
@@ -134,7 +134,7 @@ public class EnemyAIController : MonoBehaviour
         }
         else
         {
-            Debug.Log("No destination set for AI");
+            //Debug.Log("No destination set for AI");
         }
     }
 

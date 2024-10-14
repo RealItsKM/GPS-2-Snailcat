@@ -28,7 +28,7 @@ public class EnemyAISuspicion : MonoBehaviour
     {
         // Check if the player is within the detection radius and not obstructed by walls
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-        if (distanceToPlayer <= detectionRadius && !IsObstructed() && aiController.hasCaughtPlayer == false && PlayerHiding.isHiding == false)
+        if (distanceToPlayer <= detectionRadius && !IsObstructed() && EnemyAIController.hasCaughtPlayer == false && PlayerHiding.isHiding == false)
         {
             isPlayerDetected = true;
             IncreaseSuspicion();

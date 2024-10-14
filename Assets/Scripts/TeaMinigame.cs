@@ -15,6 +15,11 @@ public class TeaMinigame : MonoBehaviour, IPointerDownHandler
     public HeldItem itemManager;
     public NPCMinigame[] npcMinigame;
 
+    // New Variables
+    public List<Sprite> imageList;  // List of images for the UI
+    public Image uiImage;           // UI Image component to update
+    private int currentImageIndex = 0;
+
     void Start()
     {
         RefreshMinigame();
@@ -27,27 +32,39 @@ public class TeaMinigame : MonoBehaviour, IPointerDownHandler
 
         if (currentTapNumber >= requiredTapNumber)
         {
-            itemManager.GetItem(1);
+            itemManager.GetItem(1); //get tea
             RefreshMinigame();
             ActivateUpdateIcons();
             gamePanel.SetActive(false);
         }
+
+        UpdateImage();  // Change image after each tap
     }
 
     public void RefreshMinigame()
     {
         currentTapNumber = 0;
         requiredTapNumberText.text = requiredTapNumber.ToString();
+        currentImageIndex = 0;  // Reset to the first image
     }
 
     void ActivateUpdateIcons()
     {
         foreach (NPCMinigame npc in npcMinigame)
         {
-            if (npc != null)  
+            if (npc != null)
             {
                 npc.UpdateIcons();
             }
+        }
+    }
+
+    void UpdateImage()
+    {
+        if (imageList.Count > 0)
+        {
+            currentImageIndex = (currentImageIndex + 1) % imageList.Count;  // Move to the next image
+            uiImage.sprite = imageList[currentImageIndex];
         }
     }
 }
