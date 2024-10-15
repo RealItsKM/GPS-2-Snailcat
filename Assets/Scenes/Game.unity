@@ -16399,7 +16399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraFollow: {fileID: 963194229}
   moveSpeed: 0.2
-  minX: -25
+  minX: -41
   maxX: 20
 --- !u!1 &963376517
 GameObject:
