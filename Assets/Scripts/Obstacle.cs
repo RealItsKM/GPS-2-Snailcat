@@ -35,7 +35,7 @@ public class Obstacle : MonoBehaviour
         originalObstacle.SetActive(true);
         usedObstacle.SetActive(false);
         obstacleButton.SetActive(true);
-        isUsed = true;
+        isUsed = false;
         navMeshManager.BuildNavMesh();
     }
 }

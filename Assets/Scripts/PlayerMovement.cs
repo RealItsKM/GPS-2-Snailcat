@@ -20,15 +20,17 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        
+        /*
         if (TutorialMode.tutorialOn)
         {
             if (TutorialMode.popUpOn)
             {
+                Debug.Log("A");
+                joystick.inputVector = Vector2.zero;
                 return;
             }
         }
-        
+        */
 
         if (!isStunned)
         {

@@ -5,7 +5,7 @@ public class Joystick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointer
 {
     private RectTransform joystickBackground;
     private RectTransform joystickHandle;
-    private Vector2 inputVector;
+    public Vector2 inputVector;
     private Vector2 joystickCenter;
 
     void Start()
@@ -17,6 +17,15 @@ public class Joystick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointer
 
     public void OnDrag(PointerEventData eventData)
     {
+        /*
+        if (TutorialMode.popUpOn)
+        {
+            Debug.Log("B");
+            inputVector = Vector2.zero;
+            return;
+        }
+        */
+
         if (CameraControls.isDragging == false)
         {
             Vector2 position;

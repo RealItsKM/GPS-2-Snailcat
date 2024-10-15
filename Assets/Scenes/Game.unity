@@ -7590,6 +7590,10 @@ MonoBehaviour:
   obstructionLayers:
     serializedVersion: 2
     m_Bits: 64
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  obstacleDetectionRadius: 0
   isChasing: 0
   playerMovement: {fileID: 2066881010}
   moneyManager: {fileID: 809498267}
@@ -17785,6 +17789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8414883675c8ba64ab389615ea31a777, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputVector: {x: 0, y: 0}
 --- !u!1 &1110739005
 GameObject:
   m_ObjectHideFlags: 0
@@ -32141,6 +32146,10 @@ MonoBehaviour:
   obstructionLayers:
     serializedVersion: 2
     m_Bits: 64
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  obstacleDetectionRadius: 10
   isChasing: 0
   playerMovement: {fileID: 2066881010}
   moneyManager: {fileID: 809498267}
