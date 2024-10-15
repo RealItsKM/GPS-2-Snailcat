@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     public static int timesCaught;
     public GameObject stunTimer;
 
+    public float rotationSpeed = 10f;  // Speed of the rotation
+
     private void Start()
     {
         rb.useGravity = false;
@@ -18,6 +20,16 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        
+        if (TutorialMode.tutorialOn)
+        {
+            if (TutorialMode.popUpOn)
+            {
+                return;
+            }
+        }
+        
+
         if (!isStunned)
         {
             float moveHorizontal = Input.GetAxis("Horizontal"); // A/D or Left/Right Arrow keys
@@ -26,32 +38,41 @@ public class PlayerMovement : MonoBehaviour
             float joystickHorizontal = joystick.Horizontal();
             float joystickVertical = joystick.Vertical();
 
-            // Combine WASD and joystick input
+            //Combine WASD and joystick 
             float horizontal = Mathf.Abs(joystickHorizontal) > Mathf.Abs(moveHorizontal) ? joystickHorizontal : moveHorizontal;
             float vertical = Mathf.Abs(joystickVertical) > Mathf.Abs(moveVertical) ? joystickVertical : moveVertical;
 
-            // Remap directions for joystick: Up -> Left, Right -> Forward, Down -> Right, Left -> Backward
+            //Remap directions for joystick: Up -> Left, Right -> Forward, Down -> Right, Left -> Backward
             Vector3 direction = new Vector3(-vertical, 0, horizontal).normalized;
 
-            // Check if the input (from either WASD or joystick) is significant enough to move the player
+            //Check if the input is significant enough 
             if (direction.magnitude >= 0.1f)
             {
-                // Calculate the target velocity based on the direction and speed
                 Vector3 targetVelocity = direction * speed;
 
-                // Move the player using Rigidbody's velocity to handle collisions properly
                 rb.velocity = new Vector3(targetVelocity.x, rb.velocity.y, targetVelocity.z);
+
+
+                RotatePlayer(direction);
             }
             else
             {
-                // If not moving, stop horizontal movement but keep the Y velocity
+                //If not moving, stop horizontal movement but keep Y velocity
                 rb.velocity = new Vector3(0, rb.velocity.y, 0);
             }
         }
-        else // When stunned
+        else //When stunned
         {
             rb.velocity = new Vector3(0, rb.velocity.y, 0);
         }
+    }
+
+    void RotatePlayer(Vector3 direction)
+    {
+        //Determine the target rotation based on the movement direction
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
     public void StunPlayer(float duration)

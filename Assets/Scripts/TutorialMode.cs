@@ -20,6 +20,7 @@ public class TutorialMode : MonoBehaviour
 
     //flags
     public static bool tutorialOn;
+    public static bool popUpOn;
     public static bool collectedAngpao;
     public static bool gaveFoodOrTea;
     public static bool usedPiggyBank;
@@ -42,6 +43,7 @@ public class TutorialMode : MonoBehaviour
     void Start()
     {
         tutorialOn = true;
+        popUpOn = false;
         collectedAngpao = false;
         gaveFoodOrTea = false;
         usedPiggyBank = false;
@@ -113,6 +115,7 @@ public class TutorialMode : MonoBehaviour
     public void TutorialCompleted()
     {
         tutorialOn = false;
+        popUpOn = false;
         collectedAngpao = false;
         gaveFoodOrTea = false;
         usedPiggyBank = false;
@@ -122,11 +125,13 @@ public class TutorialMode : MonoBehaviour
 
     public void OpenTutorialUI()
     {
+        popUpOn = true;
         tutorialUI.SetActive(true);
     }
 
     public void CloseTutorialUI()
     {
+        popUpOn = false;
         tutorialUI.SetActive(false);
     }
 

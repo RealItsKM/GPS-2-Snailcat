@@ -10,6 +10,7 @@ public class HeldItem : MonoBehaviour
     public Item heldItem;
     public Image itemImage;
     public TextMeshProUGUI itemNameText;
+    public GameObject[] itemInHand;
 
     private void Start()
     {
@@ -40,12 +41,19 @@ public class HeldItem : MonoBehaviour
         */
 
         heldItem = itemList[itemID];
+        itemInHand[itemID].SetActive(true);
         UpdateItemUI();
     }
 
     public void LoseItem()
     {
         heldItem = null;
+
+        foreach (GameObject item in itemInHand)
+        {
+            item.SetActive(false);
+        }
+
         UpdateItemUI();
     }
 }
