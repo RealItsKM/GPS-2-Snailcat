@@ -16398,7 +16398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraFollow: {fileID: 963194229}
-  moveSpeed: 0.3
+  moveSpeed: 0.2
   minX: -25
   maxX: 20
 --- !u!1 &963376517
@@ -30076,7 +30076,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 6.7, y: -0.1, z: -11}
-  m_LocalScale: {x: 6, y: 3, z: 8}
+  m_LocalScale: {x: 8, y: 3, z: 12}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 786752841}
