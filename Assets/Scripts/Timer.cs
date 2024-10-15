@@ -9,6 +9,13 @@ public class Timer : MonoBehaviour
     public bool timeStarted = false;
     public TextMeshProUGUI timerText;
     public GameObject resultScreen;
+    //public static bool gameEnded = false;
+    public NPCMinigame[] npcMinigames;
+
+    private void Start()
+    {
+        //gameEnded = false;
+    }
 
     void Update()
     {
@@ -22,6 +29,13 @@ public class Timer : MonoBehaviour
                 //Debug.Log("Game Over");
                 timeStarted = false;
                 ZeroTimer();
+                //gameEnded = true;
+
+                foreach(NPCMinigame npc in npcMinigames) 
+                {
+                    npc.CloseMiniGame();
+                }
+
                 resultScreen.SetActive(true);
             }
         }

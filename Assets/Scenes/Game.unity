@@ -7152,6 +7152,10 @@ MonoBehaviour:
   timeStarted: 1
   timerText: {fileID: 1302085777}
   resultScreen: {fileID: 916601065}
+  npcMinigames:
+  - {fileID: 650172739}
+  - {fileID: 2028382901}
+  - {fileID: 682221001}
 --- !u!1 &437711634
 GameObject:
   m_ObjectHideFlags: 0
