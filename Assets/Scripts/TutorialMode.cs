@@ -38,6 +38,7 @@ public class TutorialMode : MonoBehaviour
     public GameObject wavesManager;
     public GameObject timer;
     public GameObject waves;
+    public GameObject teaButton;
     public Transform originalEnemy1Position;
 
     void Start()
@@ -106,6 +107,7 @@ public class TutorialMode : MonoBehaviour
         enemy1.transform.position = originalEnemy1Position.position; //reset enemy position
         timer.SetActive(true); //enable timer
         waves.SetActive(true); //enable waves
+        teaButton.SetActive(true);
     }
 
     public void AfterShortWave() //tapping on result screen

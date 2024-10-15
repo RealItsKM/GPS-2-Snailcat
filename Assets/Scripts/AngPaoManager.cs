@@ -8,7 +8,7 @@ public class AngPaoManager : MonoBehaviour
     private int angPaoMoneyAmount;
     public MoneyManager moneyManager;
     public TutorialMode tutorialManager;
-
+    private int tutorialAngpao = 0;
     private void Start()
     {
         angPaoNumber = 0;  
@@ -53,13 +53,15 @@ public class AngPaoManager : MonoBehaviour
 
         if(TutorialMode.tutorialOn)
         {
-            if(TutorialMode.gaveFoodOrTea == false && TutorialMode.collectedAngpao == false)
+            if(TutorialMode.gaveFoodOrTea == false && TutorialMode.collectedAngpao == false && tutorialAngpao == 0)
             {
                 tutorialManager.CollectAngpao();
+                tutorialAngpao++;
             }
-            else if (TutorialMode.gaveFoodOrTea == true && TutorialMode.collectedAngpao == true)
+            else if (TutorialMode.gaveFoodOrTea == true && TutorialMode.collectedAngpao == true && tutorialAngpao == 1)
             {
                 tutorialManager.GiveFoodOrTea();
+                tutorialAngpao++;
             }
         }
     }
