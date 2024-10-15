@@ -16398,7 +16398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraFollow: {fileID: 963194229}
-  moveSpeed: 0.5
+  moveSpeed: 0.3
   minX: -25
   maxX: 20
 --- !u!1 &963376517
