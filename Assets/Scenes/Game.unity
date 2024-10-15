@@ -7148,7 +7148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32a14a0432ff73f4e85da1d44abf11e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: 81
+  timer: 141
   timeStarted: 1
   timerText: {fileID: 1302085777}
   resultScreen: {fileID: 916601065}
@@ -10380,7 +10380,7 @@ MonoBehaviour:
   objectA: {fileID: 255276844}
   objectB: {fileID: 1898512351}
   objectC: {fileID: 753677997}
-  timePerWave: 30
+  timePerWave: 60
   transitionTime: 10
   wavesText: {fileID: 423534827}
 --- !u!1 &600399797

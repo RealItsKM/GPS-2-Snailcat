@@ -95,6 +95,8 @@ public class TutorialMode : MonoBehaviour
     {
         usedObstacle = true;
         Invoke("PopUpE1", 1f);
+
+        enemy1.SetActive(false);
     }
 
     public void StartShortWave()

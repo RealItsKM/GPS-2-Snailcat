@@ -114,6 +114,15 @@ public class WavesSystem : MonoBehaviour
     {
         Debug.Log("Wave " + (currentWave + 1) + " ended.");
 
+        foreach (var npc in waves[currentWave].npcsToEnable)
+        {
+            npc.SetActive(false);
+        }
+        foreach (var enemy in waves[currentWave].enemiesToEnable)
+        {
+            enemy.SetActive(false);
+        }
+
         currentWave++;
 
         if (currentWave >= waves.Count)
